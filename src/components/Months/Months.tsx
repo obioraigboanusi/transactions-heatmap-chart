@@ -1,9 +1,40 @@
-import React from 'react'
-
+import moment from "moment";
+import styled from "styled-components";
+import { useHeatMapContext } from "../HeatMap/HeatMap";
+import Month from "../Month/Month";
+const arr = [];
 function Months() {
+  const { numOfDaysInYear, startDate } = useHeatMapContext();
   return (
-    <div>Months</div>
-  )
+    <StyledMonths>
+      {new Array(numOfDaysInYear).fill(1).map((_, index) => {
+        const month = moment(startDate)
+          .add(index * 7, "day")
+          .format("MMM");
+        return <Month key={"month-item-" + index} month={month} />;
+      })}
+    </StyledMonths>
+  );
 }
 
-export default Months
+const StyledMonths = styled.ul`
+  display: flex;
+  padding-left: 30px;
+  
+  .Jan ~ .Jan,
+  .Feb ~ .Feb,
+  .Mar ~ .Mar,
+  .Apr ~ .Apr,
+  .May ~ .May,
+  .Jun ~ .Jun,
+  .Jul ~ .Jul,
+  .Aug ~ .Aug,
+  .Sep ~ .Sep,
+  .Oct ~ .Oct,
+  .Nov ~ .Nov,
+  .Dec ~ .Dec {
+    visibility: hidden;
+  }
+`;
+
+export default Months;
