@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { daysInWeek } from "../../App";
 import Weekday from "../Weekday/Weekday";
 
 function Weekdays() {
   return (
     <StyledWeekDays>
-      {new Array(7).fill(1).map((item, index) => (
+      
+      {daysInWeek.map((item, index) => (
         <Weekday key={"cell-item" + index} index={index} />
       ))}
     </StyledWeekDays>

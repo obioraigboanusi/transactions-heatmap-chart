@@ -1,12 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { daysInWeek } from "../../App";
+import BlankCell from "../BlankCell";
 import Cell from "../Cell/Cell";
 
-function Cells() {
+function Cells({
+  numOfDaysInYear,
+  startDate,
+}: {
+  numOfDaysInYear: number;
+  startDate: any;
+}) {
   return (
     <StyledList>
-      {new Array(200).fill(1).map((item, index) => (
-        <Cell key={"cell-item" + index} />
+      {daysInWeek.slice(0, startDate.weekday()).map((day, index) => (
+        <BlankCell key={"blank-cell-" + index} />
+      ))}
+      {new Array(numOfDaysInYear).fill(1).map((item, index) => (
+        <Cell key={"cell-item-" + index} />
       ))}
     </StyledList>
   );
