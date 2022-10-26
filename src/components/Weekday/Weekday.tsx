@@ -1,6 +1,5 @@
-import React from "react";
 import styled from "styled-components";
-import { daysInWeek } from "../../App";
+import { daysInWeek } from "../../utils/helpers";
 
 function Weekday({ index = 0 }: { index: number }) {
   return <StyledWeekDay>{daysInWeek[index]}</StyledWeekDay>;

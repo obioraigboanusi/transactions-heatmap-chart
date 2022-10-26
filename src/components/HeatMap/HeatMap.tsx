@@ -1,20 +1,63 @@
+import { createContext, useContext, useEffect, useState } from "react";
 import Cells from "../Cells";
 import Weekdays from "../Weekdays";
-import moment from "moment";
+import { generateTransactionData } from "../../utils/helpers";
+import { ITransactionContextData } from "../../utils/types";
+import Months from "../Months";
 
-function HeatMap({ year, data }: { year: number; data: any }) {
-  const startDate = moment(new Date(year?.toString()));
-  const endDate = moment(new Date((year + 1).toString()));
-  const numOfDaysInYear = endDate.diff(startDate, "days");
+const HeatMapContext = createContext<ITransactionContextData | any>(null);
+export const useHeatMapContext = () => useContext(HeatMapContext);
+
+function HeatMap() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    fetch("/transactions-carter.json")
+      .then((res) => res.json())
+      .then((data) => {
+        setTransactions(data);
+      })
+      .catch((error) => console.log(error.message))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div>Loading</div>;
+
+  const {
+    sortedData,
+    year,
+    firstDate,
+    maxSum,
+    minSum,
+    numOfDaysInYear,
+    startDate,
+    endDate,
+  } = generateTransactionData(transactions);
 
   return (
-    <div>
-      <div></div>
+    <HeatMapContext.Provider
+      value={{
+        sortedData,
+        year,
+        firstDate,
+        maxSum,
+        minSum,
+        numOfDaysInYear,
+        startDate,
+        endDate,
+      }}
+    >
       <div>
-        <Weekdays />
-        <Cells startDate={startDate} numOfDaysInYear={numOfDaysInYear} />
+        <div>
+          <Weekdays />
+          <Cells />
+        </div>
+        <Months />
       </div>
-    </div>
+    </HeatMapContext.Provider>
   );
 }
 

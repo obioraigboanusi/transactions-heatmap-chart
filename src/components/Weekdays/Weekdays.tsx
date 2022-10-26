@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { daysInWeek } from "../../App";
+import { daysInWeek } from "../../utils/helpers";
 import Weekday from "../Weekday/Weekday";
 
 function Weekdays() {

@@ -1,27 +1,25 @@
-import React from "react";
 import styled from "styled-components";
-import { daysInWeek } from "../../App";
+import { daysInWeek } from "../../utils/helpers";
 import BlankCell from "../BlankCell";
 import Cell from "../Cell/Cell";
+import { useHeatMapContext } from "../HeatMap/HeatMap";
 
-function Cells({
-  numOfDaysInYear,
-  startDate,
-}: {
-  numOfDaysInYear: number;
-  startDate: any;
-}) {
+function Cells() {
+
+  const { numOfDaysInYear, startDate } = useHeatMapContext();
+  
   return (
     <StyledList>
-      {daysInWeek.slice(0, startDate.weekday()).map((day, index) => (
+      {daysInWeek.slice(0, startDate.weekday()).map((_, index: number) => (
         <BlankCell key={"blank-cell-" + index} />
       ))}
-      {new Array(numOfDaysInYear).fill(1).map((item, index) => (
-        <Cell key={"cell-item-" + index} />
+      {new Array(numOfDaysInYear).fill(1).map((_, index) => (
+        <Cell key={"cell-item-" + index} index={index} />
       ))}
     </StyledList>
   );
 }
+
 const StyledList = styled.ul`
   width: fit-content;
   display: inline-flex;
