@@ -8,7 +8,7 @@ export const generateTransactionData = (
   const values: number[] = [];
 
   transactions.forEach((transaction: ITransaction) => {
-    const key = moment(transaction.date).dayOfYear() as keyof typeof data;
+    const key = moment(transaction?.date).dayOfYear() as keyof typeof data;
     const value =
       transaction.transactionType === "debit"
         ? -transaction.amount
@@ -16,7 +16,7 @@ export const generateTransactionData = (
 
     if (!data.hasOwnProperty(key)) {
       data[key] = {
-        date: transaction.date,
+        date: transaction?.date,
         sum: value,
         items: [value],
       };
@@ -32,7 +32,7 @@ export const generateTransactionData = (
     }
   });
 
-  const firstDate = new Date(transactions[0].date);
+  const firstDate = new Date(transactions[0]?.date);
   const year = new Date(firstDate).getFullYear();
   const maxSum = Math.max(...values);
   const minSum = Math.min(...values);
