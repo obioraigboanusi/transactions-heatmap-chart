@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import Cells from "../Cells";
 import Weekdays from "../Weekdays";
 import { generateTransactionData } from "../../utils/helpers";
 import { ITransactionContextData } from "../../utils/types";
 import Months from "../Months";
+import styled from "styled-components";
 
 const HeatMapContext = createContext<ITransactionContextData | any>(null);
 export const useHeatMapContext = () => useContext(HeatMapContext);
@@ -11,6 +12,7 @@ export const useHeatMapContext = () => useContext(HeatMapContext);
 function HeatMap() {
   const [loading, setLoading] = useState<boolean>(true);
   const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetch("/transactions-carter.json")
@@ -18,47 +20,45 @@ function HeatMap() {
       .then((data) => {
         setTransactions(data);
       })
-      .catch((error) => console.log(error.message))
+      .catch((error) => setError(error.message))
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  if (loading) return <div>Loading</div>;
+ const data = useMemo(() => generateTransactionData(transactions), [transactions]);
 
-  const {
-    sortedData,
-    year,
-    firstDate,
-    maxSum,
-    minSum,
-    numOfDaysInYear,
-    startDate,
-    endDate,
-  } = generateTransactionData(transactions);
+  if (loading) return <div>Loading</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <HeatMapContext.Provider
-      value={{
-        sortedData,
-        year,
-        firstDate,
-        maxSum,
-        minSum,
-        numOfDaysInYear,
-        startDate,
-        endDate,
-      }}
-    >
-      <div>
+    <HeatMapContext.Provider value={data}>
+      <StyledHeatMap>
+        <h1>Financial Transactions Heatmap</h1>
         <div>
-          <Weekdays />
-          <Cells />
+          <div>
+            <Weekdays />
+            <Cells />
+          </div>
+          <Months />
         </div>
-        <Months />
-      </div>
+      </StyledHeatMap>
     </HeatMapContext.Provider>
   );
 }
+const StyledHeatMap = styled.div`
+  & > div {
+    border: 1px solid lightgray;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 2rem;
+  }
+  & > h1 {
+    color: grey;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+`;
 
 export default HeatMap;
