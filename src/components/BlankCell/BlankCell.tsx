@@ -5,11 +5,9 @@ function BlankCell() {
   return <StyledBlankCell />;
 }
 const StyledBlankCell = styled.li`
-  height: 10px;
-  width: 10px;
-  border: 1px solid transparent;
+  height: 12px;
+  width: 12px;
   margin: 2px;
-  border-radius: 2px;
 `;
 
 export default BlankCell;

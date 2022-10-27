@@ -1,17 +1,25 @@
 import styled from "styled-components";
 import { daysInWeek } from "../../utils/helpers";
 
-function Weekday({ index = 0 }: { index: number }) {
-  return <StyledWeekDay>{daysInWeek[index]}</StyledWeekDay>;
+function Weekday({ index }: { index: number }) {
+  return (
+    <StyledWeekDay>
+      <span>{daysInWeek[index]}</span>
+    </StyledWeekDay>
+  );
 }
 
 const StyledWeekDay = styled.li`
   font-size: 10px;
-  height: 10px;
-  border: 1px solid transparent;
+  height: 12px;
   margin: 2px;
-  vertical-align: middle;
-  text-align: end;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  span {
+    vertical-align: middle;
+    line-height: 1;
+  }
 `;
 
 export default Weekday;

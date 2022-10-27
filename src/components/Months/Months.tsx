@@ -2,7 +2,7 @@ import moment from "moment";
 import styled from "styled-components";
 import { useHeatMapContext } from "../HeatMap/HeatMap";
 import Month from "../Month/Month";
-const arr = [];
+
 function Months() {
   const { numOfDaysInYear, startDate } = useHeatMapContext();
   return (
@@ -20,7 +20,9 @@ function Months() {
 const StyledMonths = styled.ul`
   display: flex;
   padding-left: 30px;
-  
+  max-width: ${(12 + 4) * 53 + 30}px;
+  overflow-x: hidden;
+
   .Jan ~ .Jan,
   .Feb ~ .Feb,
   .Mar ~ .Mar,
