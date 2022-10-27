@@ -21,7 +21,7 @@ export const generateTransactionData = (
         items: [value],
       };
     } else {
-      data[key].sum += value;
+      data[key].sum = +(data[key].sum + value).toFixed(2);
       data[key].items.push(value);
     }
   });

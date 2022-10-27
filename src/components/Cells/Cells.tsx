@@ -5,12 +5,11 @@ import Cell from "../Cell/Cell";
 import { useHeatMapContext } from "../HeatMap/HeatMap";
 
 function Cells() {
-
   const { numOfDaysInYear, startDate } = useHeatMapContext();
-  
+
   return (
     <StyledList>
-      {daysInWeek.slice(0, startDate.weekday()).map((_, index: number) => (
+      {daysInWeek.slice(0, startDate.weekday() - 1).map((_, index: number) => (
         <BlankCell key={"blank-cell-" + index} />
       ))}
       {new Array(numOfDaysInYear).fill(1).map((_, index) => (
@@ -25,7 +24,7 @@ const StyledList = styled.ul`
   display: inline-flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: ${(10 + 4) * 7}px;
+  height: ${(12 + 4) * 7}px;
 `;
 
 export default Cells;
